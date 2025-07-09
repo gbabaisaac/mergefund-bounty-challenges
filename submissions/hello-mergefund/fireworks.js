@@ -1,5 +1,4 @@
-// Mario-style fireworks for Hello MergeFund
-// Usage: triggerFireworks(canvas, count)
+// Fireworks
 
 let fireworksActive = false;
 let fireworksQueue = [];
@@ -37,7 +36,6 @@ function triggerFireworks(canvas, count = 14) {
     fireworksCtx = canvas.getContext('2d');
     fireworksQueue = [];
     fireworksParticles = [];
-    // Schedule firework launches
     for (let i = 0; i < count; i++) {
         const delay = i * 400 + Math.random() * 200;
         fireworksQueue.push({
@@ -55,15 +53,12 @@ function setFireworksZIndex(z) {
 function fireworksLoop() {
     if (!fireworksActive) return;
     const now = performance.now();
-    // Launch new fireworks if their time has come
     while (fireworksQueue.length && fireworksQueue[0].launchTime <= now) {
         const fw = fireworksQueue.shift();
         launchFirework(fw.x);
     }
-    // Update and draw
     updateFireworksParticles();
     drawFireworksParticles();
-    // Continue animation if there are particles or launches left
     if (fireworksParticles.length > 0 || fireworksQueue.length > 0) {
         fireworksAnimationId = requestAnimationFrame(fireworksLoop);
     } else {
@@ -73,7 +68,6 @@ function fireworksLoop() {
 }
 
 function launchFirework(x) {
-    // Launch from bottom to a random height (10% to 80% of canvas height)
     const y0 = fireworksCanvas.height - 10;
     const y1 = Math.random() * (fireworksCanvas.height * 0.7) + fireworksCanvas.height * 0.1;
     const color = randomBrightColor();
@@ -94,20 +88,15 @@ function updateFireworksParticles() {
     const newParticles = [];
     for (let p of fireworksParticles) {
         if (p.type === 'rocket') {
-            // Move rocket
-            // Add a tracer with a life property
             p.trail.push({x: p.x, y: p.y, alpha: 1, life: 0});
             if (p.trail.length > 24) p.trail.shift();
             p.y += p.vy;
-            // Update trail fading
             for (let t of p.trail) {
                 t.life++;
                 t.alpha = Math.max(0, 1 - t.life / 18);
             }
-            // Remove fully faded tracers
             p.trail = p.trail.filter(t => t.alpha > 0.01);
             if (p.y <= p.targetY && !p.exploded) {
-                // Explode into starburst
                 p.exploded = true;
                 playExplosionSound();
                 for (let i = 0; i < 36; i++) {
@@ -131,7 +120,7 @@ function updateFireworksParticles() {
         } else if (p.type === 'particle') {
             p.x += p.vx;
             p.y += p.vy;
-            p.vy += 0.04; // gravity
+            p.vy += 0.04;
             p.life++;
             p.alpha -= 0.014;
             if (p.alpha > 0) {
@@ -144,11 +133,9 @@ function updateFireworksParticles() {
 
 function drawFireworksParticles() {
     if (!fireworksCtx) return;
-    // Always clear the entire canvas
     fireworksCtx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
     for (let p of fireworksParticles) {
         if (p.type === 'rocket') {
-            // Draw thin white smoke trail, fading
             for (let t of p.trail) {
                 fireworksCtx.save();
                 fireworksCtx.globalAlpha = t.alpha;
@@ -160,7 +147,6 @@ function drawFireworksParticles() {
                 fireworksCtx.stroke();
                 fireworksCtx.restore();
             }
-            // Draw rocket head (larger)
             fireworksCtx.save();
             fireworksCtx.globalAlpha = 1;
             fireworksCtx.fillStyle = p.color;
@@ -180,6 +166,5 @@ function drawFireworksParticles() {
     }
 }
 
-// Export for use in main script
 window.triggerFireworks = triggerFireworks;
 window.setFireworksZIndex = setFireworksZIndex; 

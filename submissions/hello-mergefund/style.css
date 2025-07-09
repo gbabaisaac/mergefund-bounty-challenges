@@ -1,3 +1,4 @@
+/* Reset and base styles */
 * {
     margin: 0;
     padding: 0;
@@ -60,8 +61,8 @@ body {
 }
 
 @keyframes glow {
-    from { box-shadow: 0 0 10px #0f0; }
-    to { box-shadow: 0 0 20px #0f0, 0 0 30px #0f0; }
+    from { box-shadow: 0 0 10px #b18cff; }
+    to { box-shadow: 0 0 20px #b18cff, 0 0 30px #b18cff; }
 }
 
 .progress {
@@ -82,18 +83,22 @@ body {
     text-align: center;
 }
 
-.game-over {
+#gameOver {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.92);
+    z-index: 10000;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    pointer-events: auto;
+}
+#gameOver.hidden {
+    display: none;
 }
 
 .victory-text {
@@ -108,6 +113,19 @@ body {
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
+}
+
+.restart-prompt {
+    font-size: 16px;
+    color: #b18cff;
+    margin-top: 20px;
+    text-align: center;
+    animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
 }
 
 .fireworks-container {
@@ -159,52 +177,12 @@ body {
     }
 }
 
-.restart-prompt {
-    font-size: 16px;
-    color: #b18cff;
-    margin-top: 20px;
-    text-align: center;
-    animation: blink 1s ease-in-out infinite;
-}
-
-@keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0.3; }
-}
-
-@keyframes explode {
-    0% { transform: scale(0); opacity: 1; }
-    50% { transform: scale(1.5); opacity: 0.8; }
-    100% { transform: scale(2); opacity: 0; }
-}
-
-
-
 .hidden {
     display: none;
 }
 
-/* Pixel art styling */
 .pixel {
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
-} 
-
-#gameOver {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.92);
-    z-index: 10000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    pointer-events: auto;
-}
-#gameOver.hidden {
-    display: none;
 } 

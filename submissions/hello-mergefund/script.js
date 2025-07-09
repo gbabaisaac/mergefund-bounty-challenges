@@ -456,6 +456,7 @@ function gameLoop() {
 // Start the game when page loads
 window.addEventListener('load', init); 
 
+// Utility to resize the fireworks canvas to the window size
 function resizeFireworksCanvas() {
     const fwCanvas = document.getElementById('fireworksCanvas');
     if (fwCanvas) {
@@ -469,26 +470,25 @@ function resizeFireworksCanvas() {
 let fireworksIntervalId = null;
 let fireworksResizeListener = null;
 
+// Start the fireworks celebration on the win screen
 function startVictoryFireworks() {
     const fwCanvas = document.getElementById('fireworksCanvas');
     resizeFireworksCanvas();
     fwCanvas.style.display = 'block';
     if (window.setFireworksZIndex) window.setFireworksZIndex(2);
     if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 8);
-    // Keep launching new fireworks every 200ms for 8 seconds (8 at a time)
     fireworksIntervalId = setInterval(() => {
         if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 8);
     }, 200);
-    // Listen for window resize
     fireworksResizeListener = () => resizeFireworksCanvas();
     window.addEventListener('resize', fireworksResizeListener);
-    // Stop after 8 seconds
     setTimeout(() => {
         clearInterval(fireworksIntervalId);
         fireworksIntervalId = null;
     }, 8000);
 }
 
+// Stop the fireworks and cleanup
 function stopVictoryFireworks() {
     const fwCanvas = document.getElementById('fireworksCanvas');
     if (fwCanvas) fwCanvas.style.display = 'none';
