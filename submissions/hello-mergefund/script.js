@@ -470,11 +470,11 @@ function startVictoryFireworks() {
     resizeFireworksCanvas();
     fwCanvas.style.display = 'block';
     if (window.setFireworksZIndex) window.setFireworksZIndex(2);
-    if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 3);
-    // Keep launching new fireworks every 400ms for 8 seconds (3 at a time)
+    if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 8);
+    // Keep launching new fireworks every 200ms for 8 seconds (8 at a time)
     fireworksIntervalId = setInterval(() => {
-        if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 3);
-    }, 400);
+        if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 8);
+    }, 200);
     // Listen for window resize
     fireworksResizeListener = () => resizeFireworksCanvas();
     window.addEventListener('resize', fireworksResizeListener);
