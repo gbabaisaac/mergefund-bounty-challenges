@@ -46,7 +46,6 @@ function restartGame() {
     victoryMode = false;
     restartPromptShown = false;
     progress = 0;
-    collectedLetters.clear();
     collectedIndices.clear();
     bullets = [];
     enemies = [];

@@ -1,6 +1,6 @@
 // Audio context
 let audioContext;
-let shootSound, explosionSound, collectSound, victorySound, fireworkSound;
+let shootSound, explosionSound, collectSound, victorySound;
 
 // Initialize audio
 function initAudio() {
@@ -12,7 +12,6 @@ function initAudio() {
         explosionSound = createBeep(200, 0.2);
         collectSound = createBeep(1200, 0.15);
         victorySound = createBeep(400, 0.5);
-        fireworkSound = createBeep(600, 0.1);
     } catch (e) {
         console.log('Audio not supported');
     }

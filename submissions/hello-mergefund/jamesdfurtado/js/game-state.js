@@ -2,9 +2,7 @@
 let canvas, ctx;
 let gameRunning = true;
 let progress = 0;
-let collectedLetters = new Set();
 let collectedIndices = new Set();
-let gameOver = false;
 let victoryMode = false;
 let restartPromptShown = false;
 
@@ -14,8 +12,7 @@ let player = {
     y: 550,
     width: 30,
     height: 20,
-    speed: 5,
-    color: '#0f0'
+    speed: 5
 };
 
 // Game objects
