@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello MergeFund - Interactive Matrix Experience</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Matrix Rain Background -->
+        <canvas id="matrixCanvas"></canvas>
+        
+        <!-- Particle System -->
+        <canvas id="particleCanvas"></canvas>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- ASCII Art -->
+            <div class="ascii-art">
+                <pre id="asciiDisplay"></pre>
+            </div>
+            
+            <div class="logo-container">
+                <h1 class="glitch-text" data-text="HELLO">HELLO</h1>
+                <h2 class="merge-fund" data-text="MERGEFUND">MERGEFUND</h2>
+            </div>
+            
+            <div class="subtitle">
+                <p class="typewriter">Build real impact. Earn real rewards by solving open-source issues...</p>
+            </div>
+            
+            <div class="interactive-elements">
+                <button class="cyber-button" id="activateBtn">ACTIVATE PLATFORM</button>
+                <button class="cyber-button" id="hackBtn">SOLVE ISSUES</button>
+                <button class="cyber-button" id="fundBtn">DEPLOY REWARDS</button>
+                <button class="cyber-button sound-btn" id="soundBtn">🔊 ENABLE SOUND</button>
+            </div>
+            
+
+        </div>
+        
+        <!-- Terminal Toggle Button -->
+        <button class="terminal-toggle" id="terminalToggle">💻</button>
+        
+        <!-- Terminal Output -->
+        <div class="terminal" id="terminal">
+            <div class="terminal-header">
+                <span class="terminal-title">MergeFund_Terminal.exe</span>
+                <div class="terminal-controls">
+                    <span class="control minimize"></span>
+                    <span class="control maximize"></span>
+                    <span class="control close"></span>
+                </div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="prompt">mergefund@matrix:~$</span>
+                    <span class="command">echo "Hello MergeFund"</span>
+                </div>
+                <div class="terminal-output" id="terminalOutput"></div>
+                <div class="terminal-cursor">_</div>
+            </div>
+        </div>
+        
+        <!-- Footer Signature -->
+        <div class="footer-signature">
+            <div class="signature-content">
+                <span class="made-with">Made with ❤️ by a passionate developer</span>
+                <span class="creator">Building the Future with Code</span>
+                <span class="global-vision">🌍 Connecting the World • 🚀 Reaching for the Stars</span>
+            </div>
+        </div>
+        
+        <!-- Audio -->
+        <audio id="matrixSound" preload="auto">
+            <!-- Using Web Audio API for synthetic sounds -->
+        </audio>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
