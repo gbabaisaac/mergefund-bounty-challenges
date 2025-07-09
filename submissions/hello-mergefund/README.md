@@ -2,6 +2,8 @@
 
 A browser-based Space Invaders game where you shoot down letters to spell "Hello MergeFund". Winners get a firework display! Built for the MergeFund "Hello MergeFund" challenge.
 
+![Demo](demo.gif)
+
 ## 🚀 Project Overview
 This is a fun twist on the classic Space Invaders. Instead of just shooting aliens, you collect the letters to spell out "Hello MergeFund". Once you get them all, you get a fireworks show and a big win screen.
 
@@ -18,9 +20,6 @@ This is a fun twist on the classic Space Invaders. Instead of just shooting alie
 - I chose to mimic the classic arcade shooter game, "Space Invaders".
     - I tried to preserve the "retro" feel as best as possible, by using pixel graphics and synth sound effects.
 - I wanted to emphasize the celebration of MergeFund's launch with an energetic win screen.
-
-## 📸 Example
-![gif](something.gif)
 
 ## ✍️ Author's Note
 Special thanks to all of those working to make MergeFund possible!
