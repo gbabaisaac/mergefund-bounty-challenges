@@ -66,13 +66,13 @@ body {
 
 .progress {
     font-size: 12px;
-    color: #0f0;
+    color: #b18cff;
 }
 
 #gameCanvas {
-    border: 2px solid #0f0;
+    border: 2px solid #b18cff;
     background: #000;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 20px rgba(177, 140, 255, 0.3);
 }
 
 .controls {
@@ -98,9 +98,9 @@ body {
 
 .victory-text {
     font-size: 32px;
-    color: #0f0;
+    color: #b18cff;
     margin-bottom: 20px;
-    text-shadow: 0 0 10px #0f0;
+    text-shadow: 0 0 10px #b18cff;
     animation: pulse 2s ease-in-out infinite;
     text-align: center;
 }
@@ -161,7 +161,7 @@ body {
 
 .restart-prompt {
     font-size: 16px;
-    color: #0f0;
+    color: #b18cff;
     margin-top: 20px;
     text-align: center;
     animation: blink 1s ease-in-out infinite;

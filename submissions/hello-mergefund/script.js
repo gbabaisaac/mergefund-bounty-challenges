@@ -292,24 +292,30 @@ function victory() {
     }, 1000);
 }
 
+// Utility: Generate a random bright color
+function randomBrightColor() {
+    const h = Math.floor(Math.random() * 360);
+    return `hsl(${h}, 100%, 60%)`;
+}
+
 // --- Firework Animation ---
 let canvasFireworks = [];
 
 function startFireworks() {
-    // Use canvas-based fireworks
     canvasFireworks = [];
     let fireworkCount = 0;
     function launchFirework() {
         if (!victoryMode || fireworkCount >= 6) return;
         const cx = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;
         const cy = Math.random() * canvas.height * 0.3 + canvas.height * 0.1;
-        const color = ['#ff0', '#f80', '#f00', '#80f', '#0ff', '#0f0'][Math.floor(Math.random()*6)];
         const particles = [];
         for (let i = 0; i < 24; i++) {
             const angle = (i / 24) * Math.PI * 2;
             const speed = 2 + Math.random() * 2;
+            const color = randomBrightColor();
             particles.push({
                 x: cx, y: cy,
+                prevX: cx, prevY: cy,
                 vx: Math.cos(angle) * speed,
                 vy: Math.sin(angle) * speed,
                 color,
@@ -328,6 +334,17 @@ function startFireworks() {
 function drawFireworks() {
     for (let fw of canvasFireworks) {
         for (let p of fw.particles) {
+            // Draw trace
+            ctx.save();
+            ctx.globalAlpha = p.alpha * 0.5;
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(p.prevX, p.prevY);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+            ctx.restore();
+            // Draw particle
             ctx.save();
             ctx.globalAlpha = p.alpha;
             ctx.fillStyle = p.color;
@@ -340,6 +357,8 @@ function drawFireworks() {
 function updateFireworks() {
     for (let fw of canvasFireworks) {
         for (let p of fw.particles) {
+            p.prevX = p.x;
+            p.prevY = p.y;
             p.x += p.vx;
             p.y += p.vy;
             p.vy += 0.05; // gravity
@@ -347,7 +366,6 @@ function updateFireworks() {
             if (p.life > 30) p.alpha -= 0.03;
         }
     }
-    // Remove finished fireworks
     canvasFireworks = canvasFireworks.filter(fw => fw.particles.some(p => p.alpha > 0));
 }
 
@@ -428,7 +446,7 @@ function drawPlayer() {
     const x = Math.round(player.x);
     const y = Math.round(player.y);
     // Pixel art ship (11x16 grid, scale 2x)
-    // 0: transparent, 1: blue, 2: red
+    // 0: transparent, 1: purple, 2: accent purple
     const shipPixels = [
         [0,0,0,0,1,1,1,0,0,0,0],
         [0,0,0,0,1,1,1,0,0,0,0],
@@ -451,8 +469,8 @@ function drawPlayer() {
     for (let row = 0; row < shipPixels.length; row++) {
         for (let col = 0; col < shipPixels[row].length; col++) {
             let color = null;
-            if (shipPixels[row][col] === 1) color = '#cbe8fa';
-            if (shipPixels[row][col] === 2) color = '#f26a5e';
+            if (shipPixels[row][col] === 1) color = '#b18cff';
+            if (shipPixels[row][col] === 2) color = '#a07be6';
             if (color) {
                 ctx.fillStyle = color;
                 ctx.fillRect(x + col * scale, y + row * scale, scale, scale);
