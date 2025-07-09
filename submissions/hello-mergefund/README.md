@@ -24,8 +24,7 @@ A retro browser game where you shoot down letters to spell "Hello MergeFund". Wi
 Special thanks to all of those working to make MergeFund possible!
 
 
+
 James David Furtado
-
-jamesdfurtado@gmail.com
-
-https://www.linkedin.com/in/james-furtado/
+[![Email](https://img.shields.io/badge/Email-jamesdfurtado@gmail.com-red?style=flat-square&logo=gmail)](mailto:jamesdfurtado@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-james--furtado-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/james-furtado/)
