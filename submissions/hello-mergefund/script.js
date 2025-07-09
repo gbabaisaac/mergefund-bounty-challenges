@@ -292,38 +292,63 @@ function victory() {
     }, 1000);
 }
 
-// Start fireworks animation
+// --- Firework Animation ---
+let canvasFireworks = [];
+
 function startFireworks() {
-    const container = document.querySelector('.fireworks-container');
-    const colors = ['#ff0', '#f80', '#f00', '#80f', '#0ff', '#0f0'];
-    
-    function createFirework() {
-        if (!victoryMode) return;
-        
-        const firework = document.createElement('div');
-        firework.className = 'firework';
-        firework.style.left = Math.random() * 100 + '%';
-        firework.style.top = Math.random() * 100 + '%';
-        firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        
-        container.appendChild(firework);
-        
+    // Use canvas-based fireworks
+    canvasFireworks = [];
+    let fireworkCount = 0;
+    function launchFirework() {
+        if (!victoryMode || fireworkCount >= 6) return;
+        const cx = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;
+        const cy = Math.random() * canvas.height * 0.3 + canvas.height * 0.1;
+        const color = ['#ff0', '#f80', '#f00', '#80f', '#0ff', '#0f0'][Math.floor(Math.random()*6)];
+        const particles = [];
+        for (let i = 0; i < 24; i++) {
+            const angle = (i / 24) * Math.PI * 2;
+            const speed = 2 + Math.random() * 2;
+            particles.push({
+                x: cx, y: cy,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                color,
+                alpha: 1,
+                life: 0
+            });
+        }
+        canvasFireworks.push({particles, time: 0});
         if (fireworkSound) fireworkSound();
-        
-        setTimeout(() => {
-            if (firework.parentNode) {
-                firework.parentNode.removeChild(firework);
-            }
-        }, 2000);
+        fireworkCount++;
+        setTimeout(launchFirework, 800 + Math.random()*400);
     }
-    
-    // Create fireworks every 200ms
-    const fireworkInterval = setInterval(createFirework, 200);
-    
-    // Stop fireworks after 5 seconds
-    setTimeout(() => {
-        clearInterval(fireworkInterval);
-    }, 5000);
+    launchFirework();
+}
+
+function drawFireworks() {
+    for (let fw of canvasFireworks) {
+        for (let p of fw.particles) {
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.fillRect(p.x, p.y, 3, 3);
+            ctx.restore();
+        }
+    }
+}
+
+function updateFireworks() {
+    for (let fw of canvasFireworks) {
+        for (let p of fw.particles) {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.05; // gravity
+            p.life++;
+            if (p.life > 30) p.alpha -= 0.03;
+        }
+    }
+    // Remove finished fireworks
+    canvasFireworks = canvasFireworks.filter(fw => fw.particles.some(p => p.alpha > 0));
 }
 
 // Restart game
@@ -395,31 +420,45 @@ function draw() {
         ctx.arc(explosion.x, explosion.y, (explosion.maxLife - explosion.life) * 2, 0, Math.PI * 2);
         ctx.fill();
     });
+    drawFireworks();
 }
 
 // Draw player
 function drawPlayer() {
-    // Draw spaceship body
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x + 5, player.y + 5, 20, 10);
-    
-    // Draw spaceship nose
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(player.x + 25, player.y + 8, 5, 4);
-    
-    // Draw spaceship wings
-    ctx.fillStyle = '#0a0';
-    ctx.fillRect(player.x, player.y + 3, 5, 4);
-    ctx.fillRect(player.x + 25, player.y + 3, 5, 4);
-    
-    // Draw cockpit
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(player.x + 10, player.y + 7, 6, 3);
-    
-    // Draw engine glow
-    ctx.fillStyle = '#0f0';
-    ctx.fillRect(player.x + 2, player.y + 12, 3, 3);
-    ctx.fillRect(player.x + 25, player.y + 12, 3, 3);
+    const x = Math.round(player.x);
+    const y = Math.round(player.y);
+    // Pixel art ship (11x16 grid, scale 2x)
+    // 0: transparent, 1: blue, 2: red
+    const shipPixels = [
+        [0,0,0,0,1,1,1,0,0,0,0],
+        [0,0,0,0,1,1,1,0,0,0,0],
+        [0,0,0,0,1,1,1,0,0,0,0],
+        [0,0,0,1,1,1,1,1,0,0,0],
+        [0,0,0,1,1,1,1,1,0,0,0],
+        [0,0,1,1,1,1,1,1,1,0,0],
+        [0,0,1,1,2,1,2,1,1,0,0],
+        [0,1,1,1,1,1,1,1,1,1,0],
+        [0,1,1,2,1,2,1,2,1,1,0],
+        [1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,2,1,1,1,1,1,2,1,1],
+        [1,1,1,2,2,1,2,2,1,1,1],
+        [0,0,1,1,0,0,0,1,1,0,0],
+        [0,0,1,2,0,0,0,2,1,0,0],
+        [0,0,1,2,0,0,0,2,1,0,0],
+        [0,0,1,0,0,0,0,0,1,0,0],
+    ];
+    const scale = 2;
+    for (let row = 0; row < shipPixels.length; row++) {
+        for (let col = 0; col < shipPixels[row].length; col++) {
+            let color = null;
+            if (shipPixels[row][col] === 1) color = '#cbe8fa';
+            if (shipPixels[row][col] === 2) color = '#f26a5e';
+            if (color) {
+                ctx.fillStyle = color;
+                ctx.fillRect(x + col * scale, y + row * scale, scale, scale);
+            }
+        }
+    }
 }
 
 // Draw stars background
@@ -435,6 +474,7 @@ function drawStars() {
 // Game loop
 function gameLoop() {
     update();
+    updateFireworks();
     draw();
     requestAnimationFrame(gameLoop);
 }
