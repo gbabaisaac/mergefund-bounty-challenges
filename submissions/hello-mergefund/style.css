@@ -101,13 +101,26 @@ body {
     display: none;
 }
 
+#fireworksCanvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    display: none;
+    z-index: 2;
+}
+
 .victory-text {
+    position: relative;
+    z-index: 3;
+    text-align: center;
     font-size: 32px;
     color: #b18cff;
     margin-bottom: 20px;
     text-shadow: 0 0 10px #b18cff;
     animation: pulse 2s ease-in-out infinite;
-    text-align: center;
 }
 
 @keyframes pulse {
@@ -116,10 +129,12 @@ body {
 }
 
 .restart-prompt {
+    position: relative;
+    z-index: 3;
+    margin-top: 32px;
+    text-align: center;
     font-size: 16px;
     color: #b18cff;
-    margin-top: 20px;
-    text-align: center;
     animation: blink 1s ease-in-out infinite;
 }
 
