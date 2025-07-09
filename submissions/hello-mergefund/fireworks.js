@@ -30,7 +30,7 @@ function playExplosionSound() {
     } catch (e) {}
 }
 
-function triggerFireworks(canvas, count = 7) {
+function triggerFireworks(canvas, count = 14) {
     if (fireworksActive) return;
     fireworksActive = true;
     fireworksCanvas = canvas;
@@ -39,10 +39,10 @@ function triggerFireworks(canvas, count = 7) {
     fireworksParticles = [];
     // Schedule firework launches
     for (let i = 0; i < count; i++) {
-        const delay = i * 700 + Math.random() * 200;
+        const delay = i * 400 + Math.random() * 200;
         fireworksQueue.push({
             launchTime: performance.now() + delay,
-            x: Math.random() * (canvas.width * 0.7) + canvas.width * 0.15
+            x: Math.random() * canvas.width
         });
     }
     fireworksLoop();
@@ -73,9 +73,9 @@ function fireworksLoop() {
 }
 
 function launchFirework(x) {
-    // Launch from bottom to a random height
+    // Launch from bottom to a random height (10% to 80% of canvas height)
     const y0 = fireworksCanvas.height - 10;
-    const y1 = Math.random() * (fireworksCanvas.height * 0.3) + fireworksCanvas.height * 0.15;
+    const y1 = Math.random() * (fireworksCanvas.height * 0.7) + fireworksCanvas.height * 0.1;
     const color = randomBrightColor();
     fireworksParticles.push({
         type: 'rocket',

@@ -292,15 +292,7 @@ function victory() {
     
     setTimeout(() => {
         document.getElementById('gameOver').classList.remove('hidden');
-        // Show and trigger fireworks
-        const fwCanvas = document.getElementById('fireworksCanvas');
-        fwCanvas.style.display = 'block';
-        if (window.setFireworksZIndex) window.setFireworksZIndex(2);
-        if (window.triggerFireworks) {
-            window.triggerFireworks(fwCanvas, 7);
-        } else {
-            console.log('triggerFireworks not found');
-        }
+        startVictoryFireworks();
         setTimeout(() => {
             restartPromptShown = true;
             document.querySelector('.restart-prompt').classList.remove('hidden');
@@ -342,6 +334,7 @@ function restartGame() {
     if (fwCanvas) {
         fwCanvas.style.display = 'none';
     }
+    stopVictoryFireworks();
 }
 
 // Draw game objects
@@ -448,3 +441,45 @@ function gameLoop() {
 
 // Start the game when page loads
 window.addEventListener('load', init); 
+
+function resizeFireworksCanvas() {
+    const fwCanvas = document.getElementById('fireworksCanvas');
+    if (fwCanvas) {
+        fwCanvas.width = window.innerWidth;
+        fwCanvas.height = window.innerHeight;
+        fwCanvas.style.width = '100vw';
+        fwCanvas.style.height = '100vh';
+    }
+}
+
+let fireworksIntervalId = null;
+let fireworksResizeListener = null;
+
+function startVictoryFireworks() {
+    const fwCanvas = document.getElementById('fireworksCanvas');
+    resizeFireworksCanvas();
+    fwCanvas.style.display = 'block';
+    if (window.setFireworksZIndex) window.setFireworksZIndex(2);
+    if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 1);
+    // Keep launching new fireworks every 400ms for 8 seconds
+    fireworksIntervalId = setInterval(() => {
+        if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 1);
+    }, 400);
+    // Listen for window resize
+    fireworksResizeListener = () => resizeFireworksCanvas();
+    window.addEventListener('resize', fireworksResizeListener);
+    // Stop after 8 seconds
+    setTimeout(() => {
+        clearInterval(fireworksIntervalId);
+        fireworksIntervalId = null;
+    }, 8000);
+}
+
+function stopVictoryFireworks() {
+    const fwCanvas = document.getElementById('fireworksCanvas');
+    if (fwCanvas) fwCanvas.style.display = 'none';
+    if (fireworksIntervalId) clearInterval(fireworksIntervalId);
+    fireworksIntervalId = null;
+    if (fireworksResizeListener) window.removeEventListener('resize', fireworksResizeListener);
+    fireworksResizeListener = null;
+} 
