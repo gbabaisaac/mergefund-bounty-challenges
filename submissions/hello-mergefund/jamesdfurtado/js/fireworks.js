@@ -1,5 +1,4 @@
-// Fireworks
-
+// Fireworks engine variables
 let fireworksActive = false;
 let fireworksQueue = [];
 let fireworksParticles = [];
@@ -7,6 +6,11 @@ let fireworksCanvas = null;
 let fireworksCtx = null;
 let fireworksAnimationId = null;
 
+// Victory screen fireworks variables
+let fireworksIntervalId = null;
+let fireworksResizeListener = null;
+
+// Utility: Generate a random bright color
 function randomBrightColor() {
     const h = Math.floor(Math.random() * 360);
     return `hsl(${h}, 100%, 60%)`;
@@ -166,5 +170,45 @@ function drawFireworksParticles() {
     }
 }
 
+// Utility to resize the fireworks canvas to the window size
+function resizeFireworksCanvas() {
+    const fwCanvas = document.getElementById('fireworksCanvas');
+    if (fwCanvas) {
+        fwCanvas.width = window.innerWidth;
+        fwCanvas.height = window.innerHeight;
+        fwCanvas.style.width = '100vw';
+        fwCanvas.style.height = '100vh';
+    }
+}
+
+// Start the fireworks celebration on the win screen
+function startVictoryFireworks() {
+    const fwCanvas = document.getElementById('fireworksCanvas');
+    resizeFireworksCanvas();
+    fwCanvas.style.display = 'block';
+    if (window.setFireworksZIndex) window.setFireworksZIndex(2);
+    if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 8);
+    fireworksIntervalId = setInterval(() => {
+        if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 8);
+    }, 200);
+    fireworksResizeListener = () => resizeFireworksCanvas();
+    window.addEventListener('resize', fireworksResizeListener);
+    setTimeout(() => {
+        clearInterval(fireworksIntervalId);
+        fireworksIntervalId = null;
+    }, 8000);
+}
+
+// Stop the fireworks and cleanup
+function stopVictoryFireworks() {
+    const fwCanvas = document.getElementById('fireworksCanvas');
+    if (fwCanvas) fwCanvas.style.display = 'none';
+    if (fireworksIntervalId) clearInterval(fireworksIntervalId);
+    fireworksIntervalId = null;
+    if (fireworksResizeListener) window.removeEventListener('resize', fireworksResizeListener);
+    fireworksResizeListener = null;
+}
+
+// Expose functions to global scope
 window.triggerFireworks = triggerFireworks;
 window.setFireworksZIndex = setFireworksZIndex; 
