@@ -11,23 +11,23 @@
     <div class="game-container">
         <div class="ui">
             <div class="letters-display">
-                <span class="letter" data-letter="H">H</span>
-                <span class="letter" data-letter="e">e</span>
-                <span class="letter" data-letter="l">l</span>
-                <span class="letter" data-letter="l">l</span>
-                <span class="letter" data-letter="o">o</span>
-                <span class="letter" data-letter="space"> </span>
-                <span class="letter" data-letter="M">M</span>
-                <span class="letter" data-letter="e">e</span>
-                <span class="letter" data-letter="r">r</span>
-                <span class="letter" data-letter="g">g</span>
-                <span class="letter" data-letter="e">e</span>
-                <span class="letter" data-letter="F">F</span>
-                <span class="letter" data-letter="u">u</span>
-                <span class="letter" data-letter="n">n</span>
-                <span class="letter" data-letter="d">d</span>
+                <span class="letter" data-letter="H" data-index="0">H</span>
+                <span class="letter" data-letter="e" data-index="1">e</span>
+                <span class="letter" data-letter="l" data-index="2">l</span>
+                <span class="letter" data-letter="l" data-index="3">l</span>
+                <span class="letter" data-letter="o" data-index="4">o</span>
+                <span class="letter" data-letter="space" data-index="5"> </span>
+                <span class="letter" data-letter="M" data-index="6">M</span>
+                <span class="letter" data-letter="e" data-index="7">e</span>
+                <span class="letter" data-letter="r" data-index="8">r</span>
+                <span class="letter" data-letter="g" data-index="9">g</span>
+                <span class="letter" data-letter="e" data-index="10">e</span>
+                <span class="letter" data-letter="F" data-index="11">F</span>
+                <span class="letter" data-letter="u" data-index="12">u</span>
+                <span class="letter" data-letter="n" data-index="13">n</span>
+                <span class="letter" data-letter="d" data-index="14">d</span>
             </div>
-            <div class="score">Score: <span id="score">0</span></div>
+            <div class="progress">Progress: <span id="progress">0</span>%</div>
         </div>
         
         <canvas id="gameCanvas" width="800" height="600"></canvas>
@@ -38,9 +38,9 @@
     </div>
 
     <div id="gameOver" class="game-over hidden">
-        <h2>Hello MergeFund!</h2>
-        <div class="fireworks"></div>
-        <button onclick="restartGame()">Play Again</button>
+        <div class="victory-text">Hello MergeFund!</div>
+        <div class="fireworks-container"></div>
+        <div class="restart-prompt hidden">Press SPACE to restart</div>
     </div>
 
     <script src="script.js"></script>

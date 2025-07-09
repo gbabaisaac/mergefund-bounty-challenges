@@ -1,9 +1,12 @@
 // Game state
 let canvas, ctx;
 let gameRunning = true;
-let score = 0;
+let progress = 0;
 let collectedLetters = new Set();
+let collectedIndices = new Set();
 let gameOver = false;
+let victoryMode = false;
+let restartPromptShown = false;
 
 // Player
 let player = {
@@ -25,7 +28,7 @@ let keys = {};
 
 // Audio context
 let audioContext;
-let shootSound, explosionSound, collectSound, victorySound;
+let shootSound, explosionSound, collectSound, victorySound, fireworkSound;
 
 // Initialize game
 function init() {
@@ -56,6 +59,7 @@ function initAudio() {
         explosionSound = createBeep(200, 0.2);
         collectSound = createBeep(1200, 0.15);
         victorySound = createBeep(400, 0.5);
+        fireworkSound = createBeep(600, 0.1);
     } catch (e) {
         console.log('Audio not supported');
     }
@@ -87,9 +91,13 @@ function createBeep(frequency, duration) {
 function handleKeyDown(e) {
     keys[e.code] = true;
     
-    if (e.code === 'Space' && gameRunning) {
+    if (e.code === 'Space') {
         e.preventDefault();
-        shoot();
+        if (gameRunning) {
+            shoot();
+        } else if (victoryMode && restartPromptShown) {
+            restartGame();
+        }
     }
 }
 
@@ -117,9 +125,16 @@ function spawnEnemy() {
     if (!gameRunning) return;
     
     const letters = ['H', 'e', 'l', 'l', 'o', ' ', 'M', 'e', 'r', 'g', 'e', 'F', 'u', 'n', 'd'];
-    const availableLetters = letters.filter(letter => !collectedLetters.has(letter));
+    const availableIndices = [];
     
-    if (availableLetters.length === 0) {
+    // Find available letter indices (not yet collected)
+    for (let i = 0; i < letters.length; i++) {
+        if (!collectedIndices.has(i)) {
+            availableIndices.push(i);
+        }
+    }
+    
+    if (availableIndices.length === 0) {
         // All letters collected, spawn regular enemies
         enemies.push({
             x: Math.random() * (canvas.width - 20),
@@ -128,11 +143,13 @@ function spawnEnemy() {
             height: 20,
             speed: 1 + Math.random() * 2,
             color: '#f00',
-            letter: null
+            letter: null,
+            letterIndex: null
         });
     } else {
         // Spawn letter enemy
-        const randomLetter = availableLetters[Math.floor(Math.random() * availableLetters.length)];
+        const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        const letter = letters[randomIndex];
         enemies.push({
             x: Math.random() * (canvas.width - 20),
             y: -20,
@@ -140,7 +157,8 @@ function spawnEnemy() {
             height: 20,
             speed: 1 + Math.random() * 2,
             color: '#ff0',
-            letter: randomLetter
+            letter: letter,
+            letterIndex: randomIndex
         });
     }
 }
@@ -196,17 +214,15 @@ function update() {
                 if (explosionSound) explosionSound();
                 
                 // Handle letter collection
-                if (enemy.letter) {
-                    collectedLetters.add(enemy.letter);
+                if (enemy.letter && enemy.letterIndex !== null) {
+                    collectedIndices.add(enemy.letterIndex);
                     updateLetterDisplay();
+                    updateProgress();
                     if (collectSound) collectSound();
-                    score += 100;
-                } else {
-                    score += 10;
                 }
                 
                 // Check if all letters collected
-                if (collectedLetters.size >= 15) {
+                if (collectedIndices.size >= 15) {
                     victory();
                 }
             }
@@ -221,8 +237,8 @@ function update() {
         }
     });
     
-    // Update score display
-    document.getElementById('score').textContent = score;
+    // Update progress display
+    document.getElementById('progress').textContent = progress;
 }
 
 // Check collision between two objects
@@ -247,28 +263,77 @@ function createExplosion(x, y) {
 function updateLetterDisplay() {
     const letterElements = document.querySelectorAll('.letter');
     letterElements.forEach(element => {
-        const letter = element.getAttribute('data-letter');
-        if (collectedLetters.has(letter)) {
+        const index = parseInt(element.getAttribute('data-index'));
+        if (collectedIndices.has(index)) {
             element.classList.add('collected');
         }
     });
 }
 
+// Update progress
+function updateProgress() {
+    progress = Math.round((collectedIndices.size / 15) * 100);
+}
+
 // Victory function
 function victory() {
     gameRunning = false;
+    victoryMode = true;
     if (victorySound) victorySound();
     
     setTimeout(() => {
         document.getElementById('gameOver').classList.remove('hidden');
+        startFireworks();
+        
+        setTimeout(() => {
+            restartPromptShown = true;
+            document.querySelector('.restart-prompt').classList.remove('hidden');
+        }, 5000);
     }, 1000);
+}
+
+// Start fireworks animation
+function startFireworks() {
+    const container = document.querySelector('.fireworks-container');
+    const colors = ['#ff0', '#f80', '#f00', '#80f', '#0ff', '#0f0'];
+    
+    function createFirework() {
+        if (!victoryMode) return;
+        
+        const firework = document.createElement('div');
+        firework.className = 'firework';
+        firework.style.left = Math.random() * 100 + '%';
+        firework.style.top = Math.random() * 100 + '%';
+        firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        container.appendChild(firework);
+        
+        if (fireworkSound) fireworkSound();
+        
+        setTimeout(() => {
+            if (firework.parentNode) {
+                firework.parentNode.removeChild(firework);
+            }
+        }, 2000);
+    }
+    
+    // Create fireworks every 200ms
+    const fireworkInterval = setInterval(createFirework, 200);
+    
+    // Stop fireworks after 5 seconds
+    setTimeout(() => {
+        clearInterval(fireworkInterval);
+    }, 5000);
 }
 
 // Restart game
 function restartGame() {
     gameRunning = true;
-    score = 0;
+    victoryMode = false;
+    restartPromptShown = false;
+    progress = 0;
     collectedLetters.clear();
+    collectedIndices.clear();
     bullets = [];
     enemies = [];
     explosions = [];
@@ -284,6 +349,7 @@ function restartGame() {
     
     // Hide game over screen
     document.getElementById('gameOver').classList.add('hidden');
+    document.querySelector('.restart-prompt').classList.add('hidden');
 }
 
 // Draw game objects
@@ -333,13 +399,27 @@ function draw() {
 
 // Draw player
 function drawPlayer() {
+    // Draw spaceship body
     ctx.fillStyle = player.color;
-    ctx.fillRect(player.x, player.y, player.width, player.height);
+    ctx.fillRect(player.x + 5, player.y + 5, 20, 10);
     
-    // Draw player details
+    // Draw spaceship nose
     ctx.fillStyle = '#fff';
-    ctx.fillRect(player.x + 5, player.y + 5, 5, 5);
-    ctx.fillRect(player.x + 20, player.y + 5, 5, 5);
+    ctx.fillRect(player.x + 25, player.y + 8, 5, 4);
+    
+    // Draw spaceship wings
+    ctx.fillStyle = '#0a0';
+    ctx.fillRect(player.x, player.y + 3, 5, 4);
+    ctx.fillRect(player.x + 25, player.y + 3, 5, 4);
+    
+    // Draw cockpit
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(player.x + 10, player.y + 7, 6, 3);
+    
+    // Draw engine glow
+    ctx.fillStyle = '#0f0';
+    ctx.fillRect(player.x + 2, player.y + 12, 3, 3);
+    ctx.fillRect(player.x + 25, player.y + 12, 3, 3);
 }
 
 // Draw stars background
