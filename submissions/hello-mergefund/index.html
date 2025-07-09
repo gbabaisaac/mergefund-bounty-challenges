@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello MergeFund - Space Invaders</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <div class="ui">
+            <div class="letters-display">
+                <span class="letter" data-letter="H">H</span>
+                <span class="letter" data-letter="e">e</span>
+                <span class="letter" data-letter="l">l</span>
+                <span class="letter" data-letter="l">l</span>
+                <span class="letter" data-letter="o">o</span>
+                <span class="letter" data-letter="space"> </span>
+                <span class="letter" data-letter="M">M</span>
+                <span class="letter" data-letter="e">e</span>
+                <span class="letter" data-letter="r">r</span>
+                <span class="letter" data-letter="g">g</span>
+                <span class="letter" data-letter="e">e</span>
+                <span class="letter" data-letter="F">F</span>
+                <span class="letter" data-letter="u">u</span>
+                <span class="letter" data-letter="n">n</span>
+                <span class="letter" data-letter="d">d</span>
+            </div>
+            <div class="score">Score: <span id="score">0</span></div>
+        </div>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="controls">
+            <p>Use ← → to move, SPACE to shoot</p>
+        </div>
+    </div>
+
+    <div id="gameOver" class="game-over hidden">
+        <h2>Hello MergeFund!</h2>
+        <div class="fireworks"></div>
+        <button onclick="restartGame()">Play Again</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
