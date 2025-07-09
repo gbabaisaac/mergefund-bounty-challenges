@@ -1,4 +1,4 @@
-// Fireworks engine variables
+// Fireworks engine state variables
 let fireworksActive = false;
 let fireworksQueue = [];
 let fireworksParticles = [];
@@ -6,11 +6,10 @@ let fireworksCanvas = null;
 let fireworksCtx = null;
 let fireworksAnimationId = null;
 
-// Victory screen fireworks variables
+// Victory screen management variables
 let fireworksIntervalId = null;
 let fireworksResizeListener = null;
 
-// Utility: Generate a random bright color
 function randomBrightColor() {
     const h = Math.floor(Math.random() * 360);
     return `hsl(${h}, 100%, 60%)`;
@@ -170,7 +169,6 @@ function drawFireworksParticles() {
     }
 }
 
-// Utility to resize the fireworks canvas to the window size
 function resizeFireworksCanvas() {
     const fwCanvas = document.getElementById('fireworksCanvas');
     if (fwCanvas) {
@@ -181,7 +179,6 @@ function resizeFireworksCanvas() {
     }
 }
 
-// Start the fireworks celebration on the win screen
 function startVictoryFireworks() {
     const fwCanvas = document.getElementById('fireworksCanvas');
     resizeFireworksCanvas();

@@ -1,8 +1,7 @@
-// Update game objects
 function update() {
     if (!gameRunning) return;
     
-    // Update player
+    // Handle player movement with boundary checking
     if (keys['ArrowLeft'] && player.x > 0) {
         player.x -= player.speed;
     }
@@ -10,7 +9,7 @@ function update() {
         player.x += player.speed;
     }
     
-    // Update bullets
+    // Move bullets upward and remove off-screen bullets
     bullets.forEach((bullet, index) => {
         bullet.y -= bullet.speed;
         if (bullet.y < 0) {
@@ -18,7 +17,7 @@ function update() {
         }
     });
     
-    // Update enemies
+    // Move enemies downward and handle player collisions
     enemies.forEach((enemy, index) => {
         enemy.y += enemy.speed;
         
@@ -36,7 +35,7 @@ function update() {
         }
     });
     
-    // Check bullet-enemy collisions
+    // Check bullet-enemy collisions and handle letter collection
     bullets.forEach((bullet, bulletIndex) => {
         enemies.forEach((enemy, enemyIndex) => {
             if (checkCollision(bullet, enemy)) {
@@ -64,7 +63,7 @@ function update() {
         });
     });
     
-    // Update explosions
+    // Update explosion animations and remove expired ones
     explosions.forEach((explosion, index) => {
         explosion.life--;
         if (explosion.life <= 0) {

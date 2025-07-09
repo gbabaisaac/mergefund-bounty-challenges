@@ -1,4 +1,4 @@
-// Game state
+// Core game state variables
 let canvas, ctx;
 let gameRunning = true;
 let progress = 0;
@@ -6,7 +6,7 @@ let collectedIndices = new Set();
 let victoryMode = false;
 let restartPromptShown = false;
 
-// Player
+// Player object with position and movement properties
 let player = {
     x: 400,
     y: 550,
@@ -15,32 +15,27 @@ let player = {
     speed: 5
 };
 
-// Game objects
+// Dynamic game objects arrays
 let bullets = [];
 let enemies = [];
 let explosions = [];
 
-// Controls
+// Keyboard input tracking
 let keys = {};
 
-// Initialize game
 function init() {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
     
-    // Initialize audio
     initAudio();
     
-    // Event listeners
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
     
-    // Start game loop
     gameLoop();
     
-    // Spawn enemies periodically
+    // Spawn enemies every 2 seconds
     setInterval(spawnEnemy, 2000);
 }
 
-// Start the game when page loads
 window.addEventListener('load', init); 

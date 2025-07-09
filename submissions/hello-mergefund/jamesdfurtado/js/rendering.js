@@ -1,13 +1,9 @@
-// Draw game objects
 function draw() {
-    // Clear canvas
+    // Clear canvas with black background
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Draw stars background
     drawStars();
-    
-    // Draw player
     drawPlayer();
     
     // Draw bullets
@@ -16,10 +12,10 @@ function draw() {
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     });
     
-    // Draw enemies
+    // Draw enemies with letter or regular variants
     enemies.forEach(enemy => {
         if (enemy.letter) {
-            // Draw letter enemy
+            // Draw letter enemy with text
             ctx.fillStyle = enemy.color;
             ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
             ctx.fillStyle = '#000';
@@ -33,7 +29,7 @@ function draw() {
         }
     });
     
-    // Draw explosions
+    // Draw explosion effects with fade-out animation
     explosions.forEach(explosion => {
         const alpha = explosion.life / explosion.maxLife;
         ctx.fillStyle = `rgba(255, 255, 0, ${alpha})`;
@@ -41,10 +37,8 @@ function draw() {
         ctx.arc(explosion.x, explosion.y, (explosion.maxLife - explosion.life) * 2, 0, Math.PI * 2);
         ctx.fill();
     });
-    // drawFireworks(); // Removed fireworks
 }
 
-// Draw player
 function drawPlayer() {
     const x = Math.round(player.x);
     const y = Math.round(player.y);
@@ -82,7 +76,6 @@ function drawPlayer() {
     }
 }
 
-// Draw stars background
 function drawStars() {
     ctx.fillStyle = '#fff';
     for (let i = 0; i < 50; i++) {
@@ -92,10 +85,8 @@ function drawStars() {
     }
 }
 
-// Game loop
 function gameLoop() {
     update();
-    // updateFireworks(); // Removed fireworks
     draw();
     requestAnimationFrame(gameLoop);
 } 

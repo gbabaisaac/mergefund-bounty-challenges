@@ -1,4 +1,3 @@
-// Handle key down
 function handleKeyDown(e) {
     keys[e.code] = true;
     
@@ -21,7 +20,6 @@ function handleKeyDown(e) {
     }
 }
 
-// Handle key up
 function handleKeyUp(e) {
     keys[e.code] = false;
 } 

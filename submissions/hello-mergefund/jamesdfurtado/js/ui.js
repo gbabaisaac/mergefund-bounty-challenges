@@ -1,4 +1,3 @@
-// Update letter display
 function updateLetterDisplay() {
     const letterElements = document.querySelectorAll('.letter');
     letterElements.forEach(element => {
@@ -19,12 +18,10 @@ function updateLetterDisplay() {
     });
 }
 
-// Update progress
 function updateProgress() {
     progress = Math.round((collectedIndices.size / 15) * 100);
 }
 
-// Victory function
 function victory() {
     gameRunning = false;
     victoryMode = true;
@@ -40,7 +37,6 @@ function victory() {
     }, 1000);
 }
 
-// Restart game
 function restartGame() {
     gameRunning = true;
     victoryMode = false;

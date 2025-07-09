@@ -1,4 +1,3 @@
-// Shoot bullet
 function shoot() {
     if (shootSound) shootSound();
     
@@ -12,7 +11,6 @@ function shoot() {
     });
 }
 
-// Spawn enemy
 function spawnEnemy() {
     if (!gameRunning) return;
     
@@ -55,7 +53,6 @@ function spawnEnemy() {
     }
 }
 
-// Create explosion effect
 function createExplosion(x, y) {
     explosions.push({
         x: x,
@@ -65,7 +62,7 @@ function createExplosion(x, y) {
     });
 }
 
-// Check collision between two objects
+// AABB collision detection between two rectangular objects
 function checkCollision(obj1, obj2) {
     return obj1.x < obj2.x + obj2.width &&
            obj1.x + obj1.width > obj2.x &&
