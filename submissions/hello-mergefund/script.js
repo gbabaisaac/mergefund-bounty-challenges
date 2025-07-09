@@ -335,6 +335,10 @@ function restartGame() {
     // Reset letter display
     document.querySelectorAll('.letter').forEach(element => {
         element.classList.remove('collected');
+        element.style.background = '';
+        element.style.color = '';
+        element.style.borderColor = '';
+        element.style.boxShadow = '';
     });
     
     // Hide game over screen
