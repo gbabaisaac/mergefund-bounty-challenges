@@ -52,10 +52,10 @@ body {
 }
 
 .letter.collected {
-    background: #0f0;
-    color: #000;
-    border-color: #0f0;
-    box-shadow: 0 0 10px #0f0;
+    background: #b18cff !important;
+    color: #fff !important;
+    border-color: #b18cff !important;
+    box-shadow: 0 0 10px #b18cff, 0 0 20px #b18cff !important;
     animation: glow 1s ease-in-out infinite alternate;
 }
 

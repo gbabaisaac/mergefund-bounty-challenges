@@ -125,7 +125,7 @@ function shoot() {
         width: 2,
         height: 8,
         speed: 8,
-        color: '#0f0'
+        color: '#b18cff' // purple accent
     });
 }
 
@@ -275,6 +275,16 @@ function updateLetterDisplay() {
         const index = parseInt(element.getAttribute('data-index'));
         if (collectedIndices.has(index)) {
             element.classList.add('collected');
+            element.style.background = '#b18cff';
+            element.style.color = '#fff';
+            element.style.borderColor = '#b18cff';
+            element.style.boxShadow = '0 0 10px #b18cff, 0 0 20px #b18cff';
+        } else {
+            element.classList.remove('collected');
+            element.style.background = '';
+            element.style.color = '';
+            element.style.borderColor = '';
+            element.style.boxShadow = '';
         }
     });
 }
@@ -460,10 +470,10 @@ function startVictoryFireworks() {
     resizeFireworksCanvas();
     fwCanvas.style.display = 'block';
     if (window.setFireworksZIndex) window.setFireworksZIndex(2);
-    if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 1);
-    // Keep launching new fireworks every 400ms for 8 seconds
+    if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 3);
+    // Keep launching new fireworks every 400ms for 8 seconds (3 at a time)
     fireworksIntervalId = setInterval(() => {
-        if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 1);
+        if (window.triggerFireworks) window.triggerFireworks(fwCanvas, 3);
     }, 400);
     // Listen for window resize
     fireworksResizeListener = () => resizeFireworksCanvas();
