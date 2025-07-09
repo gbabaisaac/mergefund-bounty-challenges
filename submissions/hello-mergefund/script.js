@@ -99,6 +99,15 @@ function handleKeyDown(e) {
             restartGame();
         }
     }
+    if (e.code === 'KeyS') {
+        // Skip to end screen: fill all letters and trigger victory
+        if (gameRunning) {
+            for (let i = 0; i < 15; i++) collectedIndices.add(i);
+            updateLetterDisplay();
+            updateProgress();
+            victory();
+        }
+    }
 }
 
 // Handle key up
@@ -283,12 +292,19 @@ function victory() {
     
     setTimeout(() => {
         document.getElementById('gameOver').classList.remove('hidden');
-        startFireworks();
-        
+        // Show and trigger fireworks
+        const fwCanvas = document.getElementById('fireworksCanvas');
+        fwCanvas.style.display = 'block';
+        if (window.setFireworksZIndex) window.setFireworksZIndex(2);
+        if (window.triggerFireworks) {
+            window.triggerFireworks(fwCanvas, 7);
+        } else {
+            console.log('triggerFireworks not found');
+        }
         setTimeout(() => {
             restartPromptShown = true;
             document.querySelector('.restart-prompt').classList.remove('hidden');
-        }, 5000);
+        }, 8000);
     }, 1000);
 }
 
@@ -296,77 +312,6 @@ function victory() {
 function randomBrightColor() {
     const h = Math.floor(Math.random() * 360);
     return `hsl(${h}, 100%, 60%)`;
-}
-
-// --- Firework Animation ---
-let canvasFireworks = [];
-
-function startFireworks() {
-    canvasFireworks = [];
-    let fireworkCount = 0;
-    function launchFirework() {
-        if (!victoryMode || fireworkCount >= 6) return;
-        const cx = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;
-        const cy = Math.random() * canvas.height * 0.3 + canvas.height * 0.1;
-        const particles = [];
-        for (let i = 0; i < 24; i++) {
-            const angle = (i / 24) * Math.PI * 2;
-            const speed = 2 + Math.random() * 2;
-            const color = randomBrightColor();
-            particles.push({
-                x: cx, y: cy,
-                prevX: cx, prevY: cy,
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed,
-                color,
-                alpha: 1,
-                life: 0
-            });
-        }
-        canvasFireworks.push({particles, time: 0});
-        if (fireworkSound) fireworkSound();
-        fireworkCount++;
-        setTimeout(launchFirework, 800 + Math.random()*400);
-    }
-    launchFirework();
-}
-
-function drawFireworks() {
-    for (let fw of canvasFireworks) {
-        for (let p of fw.particles) {
-            // Draw trace
-            ctx.save();
-            ctx.globalAlpha = p.alpha * 0.5;
-            ctx.strokeStyle = p.color;
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(p.prevX, p.prevY);
-            ctx.lineTo(p.x, p.y);
-            ctx.stroke();
-            ctx.restore();
-            // Draw particle
-            ctx.save();
-            ctx.globalAlpha = p.alpha;
-            ctx.fillStyle = p.color;
-            ctx.fillRect(p.x, p.y, 3, 3);
-            ctx.restore();
-        }
-    }
-}
-
-function updateFireworks() {
-    for (let fw of canvasFireworks) {
-        for (let p of fw.particles) {
-            p.prevX = p.x;
-            p.prevY = p.y;
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vy += 0.05; // gravity
-            p.life++;
-            if (p.life > 30) p.alpha -= 0.03;
-        }
-    }
-    canvasFireworks = canvasFireworks.filter(fw => fw.particles.some(p => p.alpha > 0));
 }
 
 // Restart game
@@ -393,6 +338,10 @@ function restartGame() {
     // Hide game over screen
     document.getElementById('gameOver').classList.add('hidden');
     document.querySelector('.restart-prompt').classList.add('hidden');
+    const fwCanvas = document.getElementById('fireworksCanvas');
+    if (fwCanvas) {
+        fwCanvas.style.display = 'none';
+    }
 }
 
 // Draw game objects
@@ -438,7 +387,7 @@ function draw() {
         ctx.arc(explosion.x, explosion.y, (explosion.maxLife - explosion.life) * 2, 0, Math.PI * 2);
         ctx.fill();
     });
-    drawFireworks();
+    // drawFireworks(); // Removed fireworks
 }
 
 // Draw player
@@ -492,7 +441,7 @@ function drawStars() {
 // Game loop
 function gameLoop() {
     update();
-    updateFireworks();
+    // updateFireworks(); // Removed fireworks
     draw();
     requestAnimationFrame(gameLoop);
 }

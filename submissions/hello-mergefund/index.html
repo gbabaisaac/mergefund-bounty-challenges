@@ -29,20 +29,21 @@
             </div>
             <div class="progress">Progress: <span id="progress">0</span>%</div>
         </div>
-        
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        
+        <div style="position:relative; width:800px; height:600px;">
+            <canvas id="gameCanvas" width="800" height="600" style="position:relative; z-index:1;"></canvas>
+        </div>
         <div class="controls">
             <p>Use ← → to move, SPACE to shoot</p>
         </div>
     </div>
 
-    <div id="gameOver" class="game-over hidden">
-        <div class="victory-text">Hello MergeFund!</div>
-        <div class="fireworks-container"></div>
-        <div class="restart-prompt hidden">Press SPACE to restart</div>
+    <div id="gameOver" class="game-over hidden" style="position:absolute; left:0; top:0; width:800px; height:600px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <canvas id="fireworksCanvas" width="800" height="600" style="position:absolute; left:0; top:0; pointer-events:none; display:none; z-index:2;"></canvas>
+        <div class="victory-text" style="position:relative; z-index:3; text-align:center;">Hello MergeFund!</div>
+        <div class="restart-prompt hidden" style="position:relative; z-index:3; margin-top:32px; text-align:center;">Press SPACE to restart</div>
     </div>
 
     <script src="script.js"></script>
+    <script src="fireworks.js"></script>
 </body>
 </html> 
