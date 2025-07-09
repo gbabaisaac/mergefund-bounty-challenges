@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(0deg, #000 0%, #001122 50%, #000 100%);
+}
+
+.ui {
+    display: flex;
+    justify-content: space-between;
+    width: 800px;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.letters-display {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    max-width: 600px;
+}
+
+.letter {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #333;
+    border: 1px solid #666;
+    text-align: center;
+    line-height: 18px;
+    font-size: 10px;
+    color: #999;
+    transition: all 0.3s ease;
+}
+
+.letter.collected {
+    background: #b18cff !important;
+    color: #fff !important;
+    border-color: #b18cff !important;
+    box-shadow: 0 0 10px #b18cff, 0 0 20px #b18cff !important;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 10px #b18cff; }
+    to { box-shadow: 0 0 20px #b18cff, 0 0 30px #b18cff; }
+}
+
+.progress {
+    font-size: 12px;
+    color: #b18cff;
+}
+
+#gameCanvas {
+    border: 2px solid #b18cff;
+    background: #000;
+    box-shadow: 0 0 20px rgba(177, 140, 255, 0.3);
+}
+
+.controls {
+    margin-top: 10px;
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+}
+
+.skip-hint {
+    margin-top: 5px;
+    font-size: 9px;
+    color: #444;
+    opacity: 0.7;
+}
+
+.credits {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 10px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.credits p {
+    margin: 0;
+}
+
+.linkedin-badge {
+    display: inline-flex;
+    align-items: center;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.linkedin-badge:hover {
+    color: #b18cff;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(177, 140, 255, 0.3);
+}
+
+#gameOver {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.92);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+#gameOver.hidden {
+    display: none;
+}
+
+#fireworksCanvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    display: none;
+    z-index: 2;
+}
+
+.victory-text {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    font-size: 32px;
+    color: #b18cff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #b18cff;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.restart-prompt {
+    position: relative;
+    z-index: 3;
+    margin-top: 32px;
+    text-align: center;
+    font-size: 16px;
+    color: #b18cff;
+    animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+.victory-credits {
+    position: relative;
+    z-index: 3;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #b18cff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0.8;
+}
+
+.victory-credits p {
+    margin: 0;
+}
+
+.victory-credits .linkedin-badge {
+    color: #b18cff;
+    font-size: 16px;
+}
+
+.victory-credits .linkedin-badge:hover {
+    color: #fff;
+    transform: scale(1.15);
+    box-shadow: 0 0 15px rgba(177, 140, 255, 0.5);
+}
+
+.hidden {
+    display: none;
+} 
