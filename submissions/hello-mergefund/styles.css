@@ -90,7 +90,7 @@ body::before {
     text-align: center;
     margin-bottom: 20px;
     padding: 20px;
-    background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+    background: linear-gradient(135deg, #1A1A1A 0%, #2A2A2A 100%);
     border-radius: 15px;
     color: white;
     position: relative;
@@ -438,7 +438,7 @@ body::before {
     text-align: center;
     margin-top: 20px;
     padding: 20px;
-    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    background: linear-gradient(135deg, #1A1A1A 0%, #2A2A2A 100%);
     border-radius: 15px;
     color: white;
     border: 1px solid rgba(78, 205, 196, 0.3);
