@@ -439,7 +439,6 @@ class MergeFundWordQuest {
     startGame() {
         this.gameState = 'playing';
         document.getElementById('gameOverlay').style.display = 'none';
-        document.getElementById('mobileControls').style.display = 'block';
     }
     
     winGame() {
@@ -447,7 +446,6 @@ class MergeFundWordQuest {
         document.getElementById('finalScore').textContent = this.score;
         document.getElementById('victoryScreen').classList.remove('hidden');
         document.getElementById('gameOverlay').style.display = 'flex';
-        document.getElementById('mobileControls').style.display = 'none';
         
         // Play victory sound
         this.playSound('victory');
@@ -475,7 +473,6 @@ class MergeFundWordQuest {
         document.getElementById('victoryScreen').classList.add('hidden');
         document.getElementById('startScreen').style.display = 'block';
         document.getElementById('gameOverlay').style.display = 'flex';
-        document.getElementById('mobileControls').style.display = 'none';
         
         // Reset victory animation
         document.querySelectorAll('.reveal-letter').forEach(letter => {
@@ -845,72 +842,10 @@ class MergeFundWordQuest {
     
     renderUI() {
         if (this.gameState === 'playing') {
-            this.renderMiniMap();
             this.renderProgressBar();
-            this.renderCompass();
         }
     }
     
-    renderMiniMap() {
-        const mapSize = 120;
-        const mapX = this.canvas.width - mapSize - 10;
-        const mapY = 10;
-        const cellSize = mapSize / Math.max(this.cols, this.rows);
-        
-        // Mini-map background
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        this.ctx.fillRect(mapX - 5, mapY - 5, mapSize + 10, mapSize + 10);
-        
-        this.ctx.strokeStyle = '#4ECDC4';
-        this.ctx.lineWidth = 2;
-        this.ctx.strokeRect(mapX - 5, mapY - 5, mapSize + 10, mapSize + 10);
-        
-        // Render maze on mini-map
-        for (let y = 0; y < this.rows; y++) {
-            for (let x = 0; x < this.cols; x++) {
-                const miniX = mapX + x * cellSize;
-                const miniY = mapY + y * cellSize;
-                
-                if (this.maze[y][x] === 1) {
-                    this.ctx.fillStyle = '#3A3A3A';
-                } else {
-                    this.ctx.fillStyle = '#808080';
-                }
-                this.ctx.fillRect(miniX, miniY, cellSize, cellSize);
-            }
-        }
-        
-        // Render letters on mini-map
-        this.letters.forEach((letter, key) => {
-            const [x, y] = key.split(',').map(Number);
-            const miniX = mapX + x * cellSize;
-            const miniY = mapY + y * cellSize;
-            
-            this.ctx.fillStyle = '#FFD700';
-            this.ctx.beginPath();
-            this.ctx.arc(miniX + cellSize/2, miniY + cellSize/2, 2, 0, Math.PI * 2);
-            this.ctx.fill();
-        });
-        
-        // Render player on mini-map
-        const playerMiniX = mapX + this.player.x * cellSize;
-        const playerMiniY = mapY + this.player.y * cellSize;
-        
-        this.ctx.fillStyle = '#E74C3C';
-        this.ctx.beginPath();
-        this.ctx.arc(playerMiniX + cellSize/2, playerMiniY + cellSize/2, 3, 0, Math.PI * 2);
-        this.ctx.fill();
-        
-        this.ctx.strokeStyle = '#FFFFFF';
-        this.ctx.lineWidth = 1;
-        this.ctx.stroke();
-        
-        // Mini-map label
-        this.ctx.fillStyle = '#FFFFFF';
-        this.ctx.font = '12px Arial';
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText('MAP', mapX + mapSize/2, mapY + mapSize + 20);
-    }
     
     renderProgressBar() {
         const barWidth = 200;
@@ -944,72 +879,6 @@ class MergeFundWordQuest {
         this.ctx.fillText(`${this.collectedLetters.length}/${this.targetWord.length} Letters`, barX + barWidth/2, barY + 15);
     }
     
-    renderCompass() {
-        const compassSize = 60;
-        const compassX = 30;
-        const compassY = 30;
-        
-        // Find nearest letter
-        let nearestDistance = Infinity;
-        let nearestDirection = 0;
-        
-        this.letters.forEach((letter, key) => {
-            const [x, y] = key.split(',').map(Number);
-            const dx = x - this.player.x;
-            const dy = y - this.player.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < nearestDistance) {
-                nearestDistance = distance;
-                nearestDirection = Math.atan2(dy, dx);
-            }
-        });
-        
-        // Compass background
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        this.ctx.beginPath();
-        this.ctx.arc(compassX, compassY, compassSize/2 + 5, 0, Math.PI * 2);
-        this.ctx.fill();
-        
-        this.ctx.strokeStyle = '#4ECDC4';
-        this.ctx.lineWidth = 2;
-        this.ctx.stroke();
-        
-        // Compass needle pointing to nearest letter
-        if (nearestDistance < Infinity) {
-            this.ctx.strokeStyle = '#FFD700';
-            this.ctx.lineWidth = 3;
-            this.ctx.beginPath();
-            this.ctx.moveTo(compassX, compassY);
-            this.ctx.lineTo(
-                compassX + Math.cos(nearestDirection) * (compassSize/2 - 10),
-                compassY + Math.sin(nearestDirection) * (compassSize/2 - 10)
-            );
-            this.ctx.stroke();
-            
-            // Needle tip
-            this.ctx.fillStyle = '#FFD700';
-            this.ctx.beginPath();
-            this.ctx.arc(
-                compassX + Math.cos(nearestDirection) * (compassSize/2 - 10),
-                compassY + Math.sin(nearestDirection) * (compassSize/2 - 10),
-                3, 0, Math.PI * 2
-            );
-            this.ctx.fill();
-        }
-        
-        // Compass center
-        this.ctx.fillStyle = '#E74C3C';
-        this.ctx.beginPath();
-        this.ctx.arc(compassX, compassY, 4, 0, Math.PI * 2);
-        this.ctx.fill();
-        
-        // Compass label
-        this.ctx.fillStyle = '#FFFFFF';
-        this.ctx.font = '10px Arial';
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText('NEXT', compassX, compassY + compassSize/2 + 15);
-    }
 }
 
 // Initialize game when DOM is loaded
