@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 MergeFund Word Quest - Interactive Web Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1 class="game-title">🎮 MergeFund Word Quest 🎮</h1>
+            <div class="game-info">
+                <div class="progress-container">
+                    <span class="progress-label">Collected:</span>
+                    <span id="collected-letters" class="collected-letters"></span>
+                    <span id="progress-counter" class="progress-counter">(0/13)</span>
+                </div>
+                <div class="score-container">
+                    <span class="score-label">Score:</span>
+                    <span id="score" class="score">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-board-container">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            
+            <div class="game-overlay" id="gameOverlay">
+                <div class="start-screen" id="startScreen">
+                    <h2>Welcome to MergeFund Word Quest!</h2>
+                    <p>Navigate through the maze and collect all letters to spell <strong>"HELLO MERGEFUND"</strong></p>
+                    <div class="controls-info">
+                        <h3>Controls:</h3>
+                        <div class="control-grid">
+                            <div class="control-item">
+                                <span class="key">WASD</span>
+                                <span class="desc">Move around</span>
+                            </div>
+                            <div class="control-item">
+                                <span class="key">Arrow Keys</span>
+                                <span class="desc">Alternative movement</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="startButton" class="game-button">Start Quest</button>
+                </div>
+
+                <div class="victory-screen hidden" id="victoryScreen">
+                    <div class="victory-content">
+                        <h2 class="victory-title">🎉 CONGRATULATIONS! 🎉</h2>
+                        <div class="message-reveal" id="messageReveal">
+                            <span class="reveal-letter">H</span>
+                            <span class="reveal-letter">E</span>
+                            <span class="reveal-letter">L</span>
+                            <span class="reveal-letter">L</span>
+                            <span class="reveal-letter">O</span>
+                            <span class="reveal-space"> </span>
+                            <span class="reveal-letter">M</span>
+                            <span class="reveal-letter">E</span>
+                            <span class="reveal-letter">R</span>
+                            <span class="reveal-letter">G</span>
+                            <span class="reveal-letter">E</span>
+                            <span class="reveal-letter">F</span>
+                            <span class="reveal-letter">U</span>
+                            <span class="reveal-letter">N</span>
+                            <span class="reveal-letter">D</span>
+                        </div>
+                        <p class="victory-message">🚀 You've successfully completed the MergeFund Quest! 🚀</p>
+                        <p class="victory-submessage">💰 Welcome to the MergeFund ecosystem! 💰</p>
+                        <div class="victory-stats">
+                            <span>Final Score: <span id="finalScore">0</span></span>
+                        </div>
+                        <button id="playAgainButton" class="game-button">Play Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-controls" id="mobileControls">
+            <div class="d-pad">
+                <button class="d-pad-btn up" data-direction="up">↑</button>
+                <div class="d-pad-middle">
+                    <button class="d-pad-btn left" data-direction="left">←</button>
+                    <button class="d-pad-btn right" data-direction="right">→</button>
+                </div>
+                <button class="d-pad-btn down" data-direction="down">↓</button>
+            </div>
+        </div>
+
+        <footer class="game-footer">
+            <p>🌟 Created for the MergeFund Challenge - Visit <a href="https://mergefund.org" target="_blank">mergefund.org</a> 🌟</p>
+        </footer>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
